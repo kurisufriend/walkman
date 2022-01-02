@@ -1,7 +1,7 @@
 # walkman
 appx. 70 line discord bot that can enqueue ytdl sources for playing in a voice channel
 
-requires discord.py and youtube_dl
+requires discord.py and yt_dlp, but you can use goo 'ol youtube_dl without any issues (probably)
 ### if you (for whatever reason) want to run this, you should be able to understand the commands yourself from a quick glance at the code
 
 instead, this area will be used for a rant:
