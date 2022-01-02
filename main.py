@@ -1,5 +1,5 @@
 import discord
-import youtube_dl
+import yt_dlp as youtube_dl
 import time
 import asyncio
 
@@ -23,7 +23,7 @@ async def on_ready():
                     if not (format["asr"] is None):
                         link = format["url"]
                 last_playing = res
-                voice_client.play(discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(link), volume=1.0))
+                voice_client.play(discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(link, before_options="-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5"), volume=1.0))
                 print("playan")
                 sav = queue[0]
                 hack = False
@@ -52,8 +52,9 @@ async def on_message(message):
 
     if message.content.startswith("*play"):
         try:
-            voice_client = await message.author.voice.channel.connect()
+             voice_client = await message.author.voice.channel.connect()
         except: #already conn'd/user not in chan/probably something else (?). fails are not /broadly/ (really) destructive neway so who cares#nevermind
+            print("AAHHHHHHHHHHHHHHHHHHHH OH GOD")
             pass #it's ok if we do it ON PURPOSE ;^)
         queue.append(message.content.split(" ")[1])
         await message.channel.send("k")
