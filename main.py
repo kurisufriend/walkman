@@ -88,7 +88,9 @@ async def on_message(message):
         res = json.loads(requests.get(f"https://vid.puffyan.us/api/v1/search?q={'%20'.join(message.content.split(' ')[1:])}&pretty=1").text)
         res = [item for item in res if item["type"] == "video"]
         if message.content.split(' ')[0][-1] in list("012345"):
-            await q_vid(f"https://www.youtube.com/watch?v={res[int(message.content.split(' ')[0][-1])]['videoId']}")
+            v = res[int(message.content.split(' ')[0][-1])]
+            await q_vid(f"https://www.youtube.com/watch?v={v['videoId']}")
+            await message.channel.send(f"k, {v['title']}")
             return
         embed = discord.Embed(title="does this look right")
         for i, q in enumerate(res):
