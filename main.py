@@ -5,7 +5,7 @@ import asyncio
 import requests
 import json
 
-g_client = discord.Client()
+g_client = discord.Client(intents=discord.Intents.all())
 queue = []
 voice_client = None
 
@@ -56,9 +56,13 @@ async def on_message(message):
         return
 
     if message.content.startswith("*play"):
-        try: voice_client = await message.author.voice.channel.connect()
-        except: pass
-
+        print("1")
+        try:
+            print("2", message.author.voice.channel, discord.__version__)
+            voice_client = await message.author.voice.channel.connect()
+            print("shiggy", voice_client)
+        except Exception as e: print("passed on the oppo of a lifetime xister", e)
+        print("3")
         await q_vid(message.content.split(" ")[1])
         
         await message.channel.send("k")
@@ -99,5 +103,5 @@ async def on_message(message):
         await message.channel.send(embed=embed)
 
 conf = open("token", "r")
-g_client.run(conf.read(), bot=True)
+g_client.run(conf.read())
 conf.close()
