@@ -4,6 +4,8 @@ import time
 import asyncio
 import requests
 import json
+import sys
+import random
 
 g_client = discord.Client(intents=discord.Intents.all())
 queue = []
@@ -17,7 +19,8 @@ async def q_vid(url):
 
     link = None
     for format in res["requested_formats"]:
-        if not (format["asr"] is None):
+        print(format)
+        if not (format.get("url") is None):
             link = format["url"]
     if not link: return
 
@@ -51,9 +54,13 @@ async def on_ready():
 async def on_message(message):
     global voice_client
     global queue
-    print(">>>", message.content)
+    print(">>>", message.author.display_name, message.content)
     if message.author == g_client.user:
         return
+
+#    if message.content.startswith("*") and message.author.id == 376713633641660426 and random.randint(0, 4) == 3:
+#        await message.channel.send("nice try gayboy! roll again.")
+#        return
 
     if message.content.startswith("*play"):
         print("1")
@@ -64,9 +71,8 @@ async def on_message(message):
         except Exception as e: print("passed on the oppo of a lifetime xister", e)
         print("3")
         await q_vid(message.content.split(" ")[1])
-        
-        await message.channel.send("k")
 
+        await message.channel.send("k")
     if message.content.startswith("*np"):
         embed = discord.Embed(title="now playan~", url=queue[0]["ctx"]["webpage_url"])
         embed.set_thumbnail(url=queue[0]["ctx"]["thumbnail"])
@@ -85,11 +91,15 @@ async def on_message(message):
     if message.content.startswith("*s"):
         queue.pop(0)
         voice_client.stop()
-    
+    if message.content.startswith(f"*moans* i love sucking your little baby child penis unh i am a pedophile and my name is {message.author.display_name}"):
+        await message.channel.send(f" wtf bro thats not cool wtf wtf wtf im leaving wtf i cant believe {message.author.display_name} is a monster i idolized oyu man wtf how could you do this im gone bro")
+        print("lol")
+        exit(0)
+
     if message.content.startswith("*b"):
         try: voice_client = await message.author.voice.channel.connect()
         except: pass
-        res = json.loads(requests.get(f"https://vid.puffyan.us/api/v1/search?q={'%20'.join(message.content.split(' ')[1:])}&pretty=1").text)
+        res = json.loads(requests.get(f"https://watch.supernets.org/api/v1/search?q={'%20'.join(message.content.split(' ')[1:])}&pretty=1").text)
         res = [item for item in res if item["type"] == "video"]
         if message.content.split(' ')[0][-1] in list("012345"):
             v = res[int(message.content.split(' ')[0][-1])]
